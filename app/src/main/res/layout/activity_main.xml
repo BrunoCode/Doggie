@@ -11,7 +11,7 @@
     tools:context="uwt.dog.MainActivity">
 
     <TextView
-        android:text="Bruno is "
+        android:text="Bruno was here."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>
