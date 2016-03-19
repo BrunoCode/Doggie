@@ -50,4 +50,23 @@
         android:layout_below="@+id/listBttn"
         android:layout_alignLeft="@+id/listBttn"
         android:layout_alignStart="@+id/listBttn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="QR"
+        android:id="@+id/qrBttn"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/locationBttn"
+        android:layout_alignStart="@+id/locationBttn" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Code goes here"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/qrBttn"
+        android:layout_alignRight="@+id/locationBttn"
+        android:layout_alignEnd="@+id/locationBttn" />
 </RelativeLayout>

@@ -24,16 +24,21 @@ import com.firebase.client.ValueEventListener;
 import com.firebase.client.ServerValue;
 
 import org.opencv.android.OpenCVLoader;
+import org.w3c.dom.Text;
 
 import java.util.ServiceConfigurationError;
+
+import com.google.zxing.Reader;
 
 public class MainActivity extends AppCompatActivity {
 
     Button cameraBttn;
     Button listBttn;
     ImageView iv;
+    Bitmap bitmap;
     MyLocationListener mLocationListener;
     LocationManager locationManager;
+    String contents;
 
     static {
         if (!OpenCVLoader.initDebug()) {
@@ -84,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,0);
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -103,22 +108,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mLocationListener = new MyLocationListener();
-                 locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.READ_CONTACTS)
                         != PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
                     locationManager.removeUpdates(mLocationListener);
-                    } else {
-                        System.out.println("Not permission");
+                } else {
+                    System.out.println("Not permission");
                 }
 
-
-                }
-
+            }
 
         });
+
+
+
+        Button qrBttn = (Button) findViewById(R.id.qrBttn);
+        qrBttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                             startActivity(new Intent(MainActivity.this, QRActivity.class));
+
+            }
+        });
+
+
     }
 
 
@@ -126,18 +142,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("Got to here");
 
-        if (resultCode == RESULT_OK) {
-            // Image captured and saved to fileUri specified in the Intent
-            Bitmap bp = (Bitmap) data.getExtras().get("data");
-            iv.setImageBitmap(bp);
+            if (resultCode == RESULT_OK) {
+                // Image captured and saved to fileUri specified in the Intent
+                bitmap = (Bitmap) data.getExtras().get("data");
+                iv.setImageBitmap(bitmap);
 
-        } else if (resultCode == RESULT_CANCELED) {
-            // User cancelled the image capture
-            startActivity(new Intent(MainActivity.this, MainActivity.class));
-        } else {
-            // Image capture failed, advise user
-        }
+                String result = QRActivity.readCode(bitmap);
+
+                if (result != null) {
+                    System.out.println(result);
+                    TextView tv = (TextView) findViewById(R.id.textView5);
+                    tv.setText(result);
+                }
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // User cancelled the image capture
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
+            } else {
+                // Image capture failed, advise user
+            }
+
     }
 
     @Override
