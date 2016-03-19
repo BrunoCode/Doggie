@@ -12,7 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import org.opencv.android.OpenCVLoader;
 
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     MyLocationListener mLocationListener;
     LocationManager locationManager;
     String contents;
+    Firebase myFirebaseRef;
+    Firebase myFirebaseRef2;
 
     static {
         if (!OpenCVLoader.initDebug()) {
@@ -38,16 +43,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
-        Firebase myFirebaseRef = new Firebase("https://husciiprogramming.firebaseIO.com/");
-        Firebase myFirebaseRef2 = myFirebaseRef.push();
+        myFirebaseRef = new Firebase("https://husciiprogramming.firebaseIO.com/");
+        myFirebaseRef2 = myFirebaseRef.push();
         String key = myFirebaseRef2.getKey();
+        System.out.println( key);
 
 
-//        Dog a = new Dog("Tarik", "NO", key
-//
-//        );
-//
-//        myFirebaseRef2.setValue(a);
+        Dog a = new Dog("Tarik", "NO", key
+
+        );
+
+        myFirebaseRef2.setValue(a);
 //
 //
 //
@@ -133,9 +139,23 @@ public class MainActivity extends AppCompatActivity {
 
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
-            String scanContent = scanningResult.getContents();
-            TextView myAss = (TextView) findViewById(R.id.textView5);
-            myAss.setText("CONTENT: " + scanContent);
+            String key = scanningResult.getContents();
+//            TextView myAss = (TextView) findViewById(R.id.textView5);
+//            myAss.setText("CONTENT: " + key);
+            System.out.println("I got the key" + key);
+            myFirebaseRef.child(key).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Object test = snapshot.getValue();
+                System.out.println(test.toString());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
+
+        });
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),
