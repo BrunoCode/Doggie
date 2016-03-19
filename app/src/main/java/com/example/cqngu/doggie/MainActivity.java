@@ -1,23 +1,68 @@
 package com.example.cqngu.doggie;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.firebase.client.ServerValue;
+
+import java.util.ServiceConfigurationError;
 
 public class MainActivity extends AppCompatActivity {
 
     Button cameraBttn;
     Button listBttn;
     ImageView iv;
+    MyLocationListener mLocationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Firebase.setAndroidContext(this);
+        Firebase myFirebaseRef = new Firebase("https://husciiprogramming.firebaseIO.com/");
+        Firebase myFirebaseRef2 = myFirebaseRef.push();
+        String key = myFirebaseRef2.getKey();
+
+
+        Dog a = new Dog("Tarik", "NO", key
+
+        );
+
+        myFirebaseRef2.setValue(a);
+
+
+
+
+        myFirebaseRef.child(key).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Object test = snapshot.getValue();
+                System.out.println(test.toString());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
+
+        });
+
         setContentView(R.layout.activity_main);
 
         iv=(ImageView)findViewById(R.id.imageView);
@@ -38,7 +83,26 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ListActivity.class));
             }
         });
+
+        mLocationListener = new MyLocationListener();
+
+        Button location = (Button) findViewById(R.id.locationBttn);
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.READ_CONTACTS)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+                    } else {
+                        System.out.println("Not permission");
+                    }
+                }
+        });
     }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub

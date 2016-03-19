@@ -41,4 +41,13 @@
         android:layout_below="@+id/cameraBttn"
         android:layout_alignLeft="@+id/cameraBttn"
         android:layout_alignStart="@+id/cameraBttn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CurrentLocation"
+        android:id="@+id/locationBttn"
+        android:layout_below="@+id/listBttn"
+        android:layout_alignLeft="@+id/listBttn"
+        android:layout_alignStart="@+id/listBttn" />
 </RelativeLayout>

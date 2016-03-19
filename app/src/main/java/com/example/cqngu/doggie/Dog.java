@@ -7,9 +7,9 @@ public class Dog {
     String name;
     String type;
     String note;
-    int id;
+    String id;
 
-    public Dog(final String theName, final String theType, final int theId) {
+    public Dog(final String theName, final String theType, final String theId) {
         name = theName;
         type = theType;
         note = "";

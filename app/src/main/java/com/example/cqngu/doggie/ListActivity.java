@@ -22,6 +22,7 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+
         dogList = new ArrayList<Dog>();
         testList();
 
@@ -34,19 +35,10 @@ public class ListActivity extends AppCompatActivity {
                                     long id) {
                 Dog setDog = dogList.get((int) id);
 
-                TextView tv = (TextView) findViewById(R.id.textView2);
-                System.out.println(tv.getText());
-                System.out.println(tv.getText().toString());
-                String text = tv.getText().toString();
-                text += " " + setDog.getName();
-                tv.setText(text);
-
-                tv = (TextView) findViewById(R.id.textView3);
-                text = (String) tv.getText().toString();
-                text += " " + setDog.getType();
-                tv.setText(text);
-
-                startActivity(new Intent(ListActivity.this, DogProfile.class));
+                Intent in = new Intent(ListActivity.this, DogProfile.class);
+                in.putExtra("name", setDog.getName());
+                in.putExtra("type", setDog.getType());
+                startActivity(in);
             }
         });
 
@@ -54,8 +46,8 @@ public class ListActivity extends AppCompatActivity {
     }
 
     void testList() {
-        Dog dog1 = new Dog("Chinh", "Chihuahua", 011);
-        Dog dog2 = new Dog("Chris", "Husky", 112);
+        Dog dog1 = new Dog("Chinh", "Chihuahua", "011");
+        Dog dog2 = new Dog("Chris", "Husky", "112");
 
         dogList.add(dog1);
         dogList.add(dog2);
