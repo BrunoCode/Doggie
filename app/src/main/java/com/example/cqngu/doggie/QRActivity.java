@@ -38,6 +38,7 @@ public class QRActivity extends AppCompatActivity {
         try {
             bitmap = encodeAsBitmap("My text");
             imageView.setImageBitmap(bitmap);
+            readCode(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -71,7 +72,7 @@ public class QRActivity extends AppCompatActivity {
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println(resultString);
+
         return resultString;
     }
     Bitmap encodeAsBitmap(String str) throws WriterException {
