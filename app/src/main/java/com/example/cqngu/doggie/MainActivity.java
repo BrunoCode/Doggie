@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +23,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.firebase.client.ServerValue;
 
+import org.opencv.android.OpenCVLoader;
+
 import java.util.ServiceConfigurationError;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
     ImageView iv;
     MyLocationListener mLocationListener;
     LocationManager locationManager;
+
+    static {
+        if (!OpenCVLoader.initDebug()) {
+            Log.i("opencv", "opencv initialization failed");
+        } else {
+            Log.i("opencv", "opencv initialization successful");
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mLocationListener = new MyLocationListener();
                  locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
 
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.READ_CONTACTS)
