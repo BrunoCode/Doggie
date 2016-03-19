@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button listBttn;
     ImageView iv;
     MyLocationListener mLocationListener;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,24 +85,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mLocationListener = new MyLocationListener();
+
 
         Button location = (Button) findViewById(R.id.locationBttn);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                mLocationListener = new MyLocationListener();
+                 locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
 
                 if (ContextCompat.checkSelfPermission(MainActivity.this,
                         Manifest.permission.READ_CONTACTS)
                         != PackageManager.PERMISSION_GRANTED) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);
+                    locationManager.removeUpdates(mLocationListener);
                     } else {
                         System.out.println("Not permission");
-                    }
                 }
+
+
+                }
+
+
         });
     }
+
 
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
