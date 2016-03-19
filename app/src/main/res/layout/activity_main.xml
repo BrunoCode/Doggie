@@ -69,4 +69,12 @@
         android:layout_below="@+id/qrBttn"
         android:layout_alignRight="@+id/locationBttn"
         android:layout_alignEnd="@+id/locationBttn" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Dogs"
+        android:id="@+id/myDogsBttn"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

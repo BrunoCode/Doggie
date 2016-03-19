@@ -49,7 +49,15 @@
             android:label="@string/title_activity_dog_profile"
             android:parentActivityName=".ListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".QRActivity"></activity>
+        <activity android:name=".QRActivity" />
+        <activity
+            android:name=".MyDogsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_dog_list"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MyDogsProfile"
+            android:parentActivityName=".ListActivity"></activity>
     </application>
 
 </manifest>

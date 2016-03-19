@@ -18,6 +18,10 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import org.opencv.android.OpenCVLoader;
+import android.provider.Settings.Secure;
+import android.content.Context;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,49 +32,51 @@ public class MainActivity extends AppCompatActivity {
     MyLocationListener mLocationListener;
     LocationManager locationManager;
     String contents;
-    Firebase myFirebaseRef;
-    Firebase myFirebaseRef2;
+    static Firebase myFirebaseRef;
+ //   static Firebase myFirebaseRef2;
+    static String android_id;
+    static UserProfile currentUser;
 
-    static {
-        if (!OpenCVLoader.initDebug()) {
-            Log.i("opencv", "opencv initialization failed");
-        } else {
-            Log.i("opencv", "opencv initialization successful");
-        }
-    }
+//    static {
+//        if (!OpenCVLoader.initDebug()) {
+//            Log.i("opencv", "opencv initialization failed");
+//        } else {
+//            Log.i("opencv", "opencv initialization successful");
+//        }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
+        android_id = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
         myFirebaseRef = new Firebase("https://husciiprogramming.firebaseIO.com/");
-        myFirebaseRef2 = myFirebaseRef.push();
-        String key = myFirebaseRef2.getKey();
-        System.out.println( key);
 
 
-        Dog a = new Dog("Tarik", "NO", key
 
-        );
 
-        myFirebaseRef2.setValue(a);
-//
-//
-//
-//
-//        myFirebaseRef.child(key).addValueEventListener(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(DataSnapshot snapshot) {
-//                Object test = snapshot.getValue();
-//                System.out.println(test.toString());
-//            }
-//
-//            @Override
-//            public void onCancelled(FirebaseError error) {
-//            }
-//
-//        });
+
+
+
+
+        myFirebaseRef.child("users").child(android_id).addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot == null) {
+                    Firebase myFirebaseRef2 = myFirebaseRef.child("users").child(android_id);
+                    currentUser = new UserProfile(android_id);
+                    myFirebaseRef2.setValue(currentUser);
+                } else {
+                    currentUser = ((HashMap<String, UserProfile>) (snapshot.getValue())).get(android_id);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError error) {
+            }
+
+        });
 
         setContentView(R.layout.activity_main);
 
