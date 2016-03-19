@@ -34,11 +34,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.cqngu.doggie.MainActivity" />
         </activity>
-        <activity android:name=".ListActivity"
+        <activity
+            android:name=".ListActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity"
-            ></activity>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DogProfile"
+            android:label="@string/title_activity_dog_profile"
+            android:parentActivityName=".ListActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

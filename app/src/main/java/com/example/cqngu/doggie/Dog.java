@@ -9,5 +9,38 @@ public class Dog {
     String note;
     int id;
 
-    public Dog()
+    public Dog(final String theName, final String theType, final int theId) {
+        name = theName;
+        type = theType;
+        note = "";
+        id = theId;
+    }
+
+    public void addNote(final String newNote) {
+        note = newNote;
+    }
+
+    public void update(final String theName, final String theType) {
+        name = theName;
+        type = theType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder bd = new StringBuilder();
+
+        bd.append(name);
+        bd.append("\n");
+        bd.append(type);
+
+        return bd.toString();
+    }
 }
