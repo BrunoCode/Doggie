@@ -5,11 +5,9 @@ import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -17,15 +15,11 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import org.opencv.android.OpenCVLoader;
 import android.provider.Settings.Secure;
-import android.content.Context;
-
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button cameraBttn;
+
     Button listBttn;
     ImageView iv;
     Bitmap bitmap;
@@ -49,40 +43,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
+        setContentView(R.layout.activity_main);
         android_id = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
         myFirebaseRef = new Firebase("https://husciiprogramming.firebaseIO.com/");
 
 
+        System.out.println(android_id );
 
 
 
 
+//        if (currentUser == null) {
+//
+//            myFirebaseRef.child("users").child(android_id).addValueEventListener(new ValueEventListener() {
+//
+//                @Override
+//                public void onDataChange(DataSnapshot snapshot) {
+//                    currentUser = ((HashMap<String, UserProfile>) (snapshot.getValue())).get(android_id);
+//
+//                    if (currentUser == null) {
+//                        Firebase myFirebaseRef2 = myFirebaseRef.child("users").child(android_id);
+//                        currentUser = new UserProfile(android_id);
+//                        myFirebaseRef2.setValue(currentUser);
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(FirebaseError error) {
+//                }
+//
+//            });
+//        }
 
 
-        myFirebaseRef.child("users").child(android_id).addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                if (snapshot == null) {
-                    Firebase myFirebaseRef2 = myFirebaseRef.child("users").child(android_id);
-                    currentUser = new UserProfile(android_id);
-                    myFirebaseRef2.setValue(currentUser);
-                } else {
-                    currentUser = ((HashMap<String, UserProfile>) (snapshot.getValue())).get(android_id);
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError error) {
-            }
-
-        });
-
-        setContentView(R.layout.activity_main);
-
-        iv=(ImageView)findViewById(R.id.imageView);
-
-        cameraBttn = (Button) findViewById(R.id.cameraBttn);
+        Button cameraBttn = (Button) findViewById(R.id.cmrBttn);
         cameraBttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +130,16 @@ public class MainActivity extends AppCompatActivity {
 //        });
 //
 
+//                Button myDogBttn = (Button) findViewById(R.id.myDogsBttn);
+//        myDogBttn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                             startActivity(new Intent(MainActivity.this, MyDogsActivity.class));
+//
+//            }
+//        });
+
+
     }
 
 
@@ -143,12 +148,12 @@ public class MainActivity extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, intent);
 
+
+
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
             String key = scanningResult.getContents();
-//            TextView myAss = (TextView) findViewById(R.id.textView5);
-//            myAss.setText("CONTENT: " + key);
-            System.out.println("I got the key" + key);
+
             myFirebaseRef.child(key).addValueEventListener(new ValueEventListener() {
 
             @Override

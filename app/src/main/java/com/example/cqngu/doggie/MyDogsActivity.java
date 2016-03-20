@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.firebase.client.DataSnapshot;
@@ -25,7 +26,10 @@ public class MyDogsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_dogs);
 
-        dogList = MainActivity.currentUser.myDogList;
+
+
+        dogList = new ArrayList<Dog>();
+
 
         dogAdapter = new ArrayAdapter<Dog>(this, android.R.layout.simple_list_item_1, dogList);
         ListView lv= (ListView) findViewById(R.id.theListView);
@@ -42,6 +46,15 @@ public class MyDogsActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        Button addBttn = (Button) findViewById(R.id.myDogAddBttn);
+        addBttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MyDogsActivity.this, NewDog.class));
+            }
+        });
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

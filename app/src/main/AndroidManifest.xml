@@ -56,8 +56,11 @@
             android:label="@string/title_activity_dog_list"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".MyDogsProfile"
-            android:parentActivityName=".ListActivity"></activity>
+        <activity
+            android:name=".MyDogsProfile"
+            android:parentActivityName=".ListActivity" />
+        <activity android:name=".NewDog"
+            android:parentActivityName=".MyDogsActivity"></activity>
     </application>
 
 </manifest>
