@@ -22,32 +22,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DoggieList"
-        android:id="@+id/listBttn"
-        android:layout_below="@+id/cmrBttn"
-        android:layout_alignLeft="@+id/myDogsBttn" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="CurrentLocation"
-        android:id="@+id/locationBttn"
-        android:layout_below="@+id/qrBttn"
-        android:layout_alignLeft="@+id/myDogsBttn" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="QR"
-        android:id="@+id/qrBttn"
-        android:layout_below="@+id/listBttn"
-        android:layout_alignLeft="@+id/myDogsBttn" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="My Dogs"
         android:id="@+id/myDogsBttn"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/cmrBttn" />
 </RelativeLayout>

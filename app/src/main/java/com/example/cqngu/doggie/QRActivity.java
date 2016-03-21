@@ -47,6 +47,7 @@ public class QRActivity extends AppCompatActivity {
 
     }
 
+
     static String readCode(Bitmap input) {
         String resultString = null;
         MultiFormatReader mReader = new MultiFormatReader();
@@ -75,7 +76,7 @@ public class QRActivity extends AppCompatActivity {
 
         return resultString;
     }
-    Bitmap encodeAsBitmap(String str) throws WriterException {
+    static Bitmap encodeAsBitmap(String str) throws WriterException {
         BitMatrix result;
         try {
             result = new MultiFormatWriter().encode(str,

@@ -27,12 +27,11 @@ public class MyDogsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_dogs);
 
 
-
-        dogList = new ArrayList<Dog>();
+        dogList = MainActivity.currentUser.myDogList;
 
 
         dogAdapter = new ArrayAdapter<Dog>(this, android.R.layout.simple_list_item_1, dogList);
-        ListView lv= (ListView) findViewById(R.id.theListView);
+        ListView lv = (ListView) findViewById(R.id.theListView);
         lv.setAdapter(dogAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -43,6 +42,7 @@ public class MyDogsActivity extends AppCompatActivity {
                 Intent in = new Intent(MyDogsActivity.this, MyDogsProfile.class);
                 in.putExtra("name", setDog.getName());
                 in.putExtra("type", setDog.getType());
+                in.putExtra("key", id);
                 startActivity(in);
             }
         });
@@ -60,7 +60,7 @@ public class MyDogsActivity extends AppCompatActivity {
     }
 
     void loadMyDogsData() {
-     //   android_id
+        //   android_id
 
     }
 }

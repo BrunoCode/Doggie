@@ -17,6 +17,8 @@ import com.firebase.client.ValueEventListener;
 
 import android.provider.Settings.Secure;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
 
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
  //   static Firebase myFirebaseRef2;
     static String android_id;
     static UserProfile currentUser;
+    String key;
+
 
 //    static {
 //        if (!OpenCVLoader.initDebug()) {
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         android_id = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
         myFirebaseRef = new Firebase("https://husciiprogramming.firebaseIO.com/");
 
-
+        currentUser = new UserProfile(android_id);
         System.out.println(android_id );
 
 
@@ -130,14 +134,14 @@ public class MainActivity extends AppCompatActivity {
 //        });
 //
 
-//                Button myDogBttn = (Button) findViewById(R.id.myDogsBttn);
-//        myDogBttn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                             startActivity(new Intent(MainActivity.this, MyDogsActivity.class));
-//
-//            }
-//        });
+                Button myDogBttn = (Button) findViewById(R.id.myDogsBttn);
+        myDogBttn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                             startActivity(new Intent(MainActivity.this, MyDogsActivity.class));
+
+            }
+        });
 
 
     }
@@ -152,21 +156,26 @@ public class MainActivity extends AppCompatActivity {
 
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
-            String key = scanningResult.getContents();
+             key = scanningResult.getContents();
 
-            myFirebaseRef.child(key).addValueEventListener(new ValueEventListener() {
+            myFirebaseRef.child(key).child("dogs").addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Object test = snapshot.getValue();
-                System.out.println(test.toString());
-            }
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    HashMap<String, String> test = (HashMap<String, String> ) snapshot.getValue();
 
-            @Override
-            public void onCancelled(FirebaseError error) {
-            }
 
-        });
+                    Intent in = new Intent(MainActivity.this, DogProfile.class);
+                    in.putExtra("name", test.get("name"));
+                    in.putExtra("type", test.get("type"));
+                    startActivity(in);
+                }
+
+                @Override
+                public void onCancelled(FirebaseError error) {
+                }
+
+            });
         }
         else{
             Toast toast = Toast.makeText(getApplicationContext(),
