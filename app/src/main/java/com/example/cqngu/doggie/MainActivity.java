@@ -143,10 +143,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         // TODO Auto-generated method stub
