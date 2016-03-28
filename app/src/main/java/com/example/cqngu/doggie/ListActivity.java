@@ -9,7 +9,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -24,7 +31,7 @@ public class ListActivity extends AppCompatActivity {
 
 
         dogList = new ArrayList<Dog>();
-        testList();
+        loadList();
 
         dogAdapter = new ArrayAdapter<Dog>(this, android.R.layout.simple_list_item_1, dogList);
         ListView lv= (ListView) findViewById(R.id.theListView);
@@ -51,5 +58,51 @@ public class ListActivity extends AppCompatActivity {
 
         dogList.add(dog1);
         dogList.add(dog2);
+    }
+
+    void loadList() {
+//        File file = new File(getFilesDir(), "mydogs");
+        final String[] keyList = readFile("dogList");
+        String[] aDog;
+
+        if (keyList != null) {
+            for (int i = 0; i < keyList.length; i++) {
+
+                MainActivity.myFirebaseRef.child(keyList[i]).addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        HashMap<String, String> test = (HashMap<String, String>) snapshot.getValue();
+
+                        Dog dog = new Dog(test.get("name"), test.get("type"));
+
+                        dogList.add(dog);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError error) {
+                    }
+
+                });
+
+
+            }
+        }
+    }
+
+    String[] readFile(String name) {
+        String[] context = null;
+
+        try {
+            FileInputStream fis = openFileInput(name);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            byte[] b = new byte[(int) fis.getChannel().size()];
+            bis.read(b);
+            context = new String(b).split("\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return context;
     }
 }

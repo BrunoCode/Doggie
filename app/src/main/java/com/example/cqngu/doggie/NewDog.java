@@ -1,5 +1,6 @@
 package com.example.cqngu.doggie;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,22 +49,24 @@ public class NewDog extends AppCompatActivity {
 
         Dog theDog = new Dog(name, type, key);
         MainActivity.currentUser.myDogList.add(theDog);
-   //     firebaseref.child(key).setValue(theDog);
+        firebaseref.child(key).setValue(theDog);
 
         try {
-            File file = new File(getFilesDir(), getString(R.string.my_dogs_file));
-            FileOutputStream os = new FileOutputStream(file);
-            BufferedOutputStream myFile = new BufferedOutputStream(os);
-//            FileOutputStream myfile = openFileOutput(getString(R.string.my_dogs_file), MODE_APPEND);
+            // Add new dog to a list
+            FileOutputStream fos = openFileOutput("mydogs", Context.MODE_APPEND);
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+            bos.write(key.getBytes());
+            bos.write(NEW_LINE);
+            bos.close();
 
-            myFile.write(name.getBytes());
-            myFile.write(TAB);
-            myFile.write(type.getBytes());
-            myFile.write(TAB);
-            myFile.write(key.getBytes());
-            myFile.write(NEW_LINE);
+            // Create new dog profile file
+            fos = openFileOutput(key, Context.MODE_APPEND);
+            bos = new BufferedOutputStream(fos);
+            bos.write(name.getBytes());
+            bos.write(NEW_LINE);
+            bos.write(type.getBytes());
+            bos.close();
 
-            myFile.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

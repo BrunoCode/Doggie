@@ -16,6 +16,13 @@ public class Dog {
         id = theId;
     }
 
+    public Dog(final String theName, final String theType) {
+        name = theName;
+        type = theType;
+        note = "";
+        id = null;
+    }
+
     public void addNote(final String newNote) {
         note = newNote;
     }
@@ -32,6 +39,8 @@ public class Dog {
     public String getType() {
         return type;
     }
+
+    public String getID() { return id; }
 
     @Override
     public String toString() {

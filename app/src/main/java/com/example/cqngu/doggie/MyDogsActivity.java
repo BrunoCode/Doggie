@@ -17,6 +17,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
@@ -31,17 +32,11 @@ public class MyDogsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_dogs);
 
-        String[] data = loadMyDogsData();
-        if (data != null) {
-            System.out.println(data.length);
+
+
             dogList = new ArrayList<Dog>();
 
-            for (String oneDog : data) {
-                String[] info = oneDog.split("\t");
-
-                Dog dog = new Dog(info[0], info[1], info[2]);
-                dogList.add(dog);
-            }
+            loadMyDogsData();
 
             dogAdapter = new ArrayAdapter<Dog>(this, android.R.layout.simple_list_item_1, dogList);
             ListView lv = (ListView) findViewById(R.id.theListView);
@@ -55,11 +50,11 @@ public class MyDogsActivity extends AppCompatActivity {
                     Intent in = new Intent(MyDogsActivity.this, MyDogsProfile.class);
                     in.putExtra("name", setDog.getName());
                     in.putExtra("type", setDog.getType());
-                    in.putExtra("key", id);
+                    in.putExtra("key", setDog.getID());
                     startActivity(in);
                 }
             });
-        }
+
 
         Button addBttn = (Button) findViewById(R.id.myDogAddBttn);
         addBttn.setOnClickListener(new View.OnClickListener() {
@@ -73,27 +68,36 @@ public class MyDogsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    String[] loadMyDogsData() {
-        //   android_id
-        String[] data = null;
-        File file = new File(getFilesDir(), getString(R.string.my_dogs_file));
-        if (file != null) {
-            System.out.println(file.getAbsolutePath());
+    void loadMyDogsData() {
+//        File file = new File(getFilesDir(), "mydogs");
+        String[] keyList = readFile("mydogs");
+        String[] aDog;
+
+        if (keyList != null) {
+            for (int i = 0; i < keyList.length; i++) {
+                aDog = readFile(keyList[i]);
+
+                System.out.println(keyList[i]);
+
+                Dog dog = new Dog(aDog[0], aDog[1], keyList[i]);
+                dogList.add(dog);
+            }
         }
-        byte[] bytes = new byte[(int) file.length()];
+    }
+
+    String[] readFile(String name) {
+        String[] context = null;
 
         try {
-            BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
-            buf.read(bytes, 0, bytes.length);
-            buf.close();
-
-            String converted = new String(bytes, "UTF-8");
-            data = converted.split("\n");
+            FileInputStream fis = openFileInput(name);
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            byte[] b = new byte[(int) fis.getChannel().size()];
+            bis.read(b);
+            context = new String(b).split("\n");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        return data;
+        return context;
     }
 }
