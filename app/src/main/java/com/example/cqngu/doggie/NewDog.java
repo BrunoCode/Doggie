@@ -49,7 +49,7 @@ public class NewDog extends AppCompatActivity {
 
         Dog theDog = new Dog(name, type, key);
         MainActivity.currentUser.myDogList.add(theDog);
-        firebaseref.child(key).setValue(theDog);
+        firebaseref.setValue(theDog);
 
         try {
             // Add new dog to a list

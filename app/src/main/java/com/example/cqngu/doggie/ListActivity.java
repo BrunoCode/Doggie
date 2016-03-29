@@ -17,6 +17,8 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -64,28 +66,31 @@ public class ListActivity extends AppCompatActivity {
 //        File file = new File(getFilesDir(), "mydogs");
         final String[] keyList = readFile("dogList");
         String[] aDog;
-
+        Set<String> added = new HashSet<String>();
         if (keyList != null) {
             for (int i = 0; i < keyList.length; i++) {
+//                System.out.println(keyList[i]);
+                if (!added.contains(keyList[i])) {
+                    added.add(keyList[i]);
 
-                MainActivity.myFirebaseRef.child(keyList[i]).addValueEventListener(new ValueEventListener() {
+                    MainActivity.myFirebaseRef.child(keyList[i]).addValueEventListener(new ValueEventListener() {
 
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        HashMap<String, String> test = (HashMap<String, String>) snapshot.getValue();
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            HashMap<String, String> test = (HashMap<String, String>) snapshot.getValue();
+//                        System.out.println(test);
+                            Dog dog = new Dog(test.get("name"), test.get("type"));
 
-                        Dog dog = new Dog(test.get("name"), test.get("type"));
+                            dogList.add(dog);
+                        }
 
-                        dogList.add(dog);
-                    }
+                        @Override
+                        public void onCancelled(FirebaseError error) {
+                        }
 
-                    @Override
-                    public void onCancelled(FirebaseError error) {
-                    }
+                    });
 
-                });
-
-
+                }
             }
         }
     }

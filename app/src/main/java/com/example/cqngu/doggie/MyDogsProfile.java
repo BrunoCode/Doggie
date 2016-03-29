@@ -23,6 +23,7 @@ public class MyDogsProfile extends AppCompatActivity {
         iv = (TextView) findViewById(R.id.myDogTypeTextView);
         iv.setText(iv.getText() + " " + in.getStringExtra("type"));
         ImageView myView = (ImageView) findViewById(R.id.imageView);
+        System.out.println(in.getStringExtra("key"));
         try {
              bitmap = QRActivity.encodeAsBitmap(in.getStringExtra("key"));
             myView.setImageBitmap(bitmap);

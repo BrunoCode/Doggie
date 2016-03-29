@@ -92,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
 //                startActivityForResult(intent, 0);
                 IntentIntegrator scanIntegrator = new IntentIntegrator(MainActivity.this);
                 scanIntegrator.initiateScan();
+//                key = "-KE-4lrpP5i1bO2Eg_WD";
+//                saveDog(key);
             }
         });
 
@@ -157,7 +159,8 @@ public class MainActivity extends AppCompatActivity {
         IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanningResult != null) {
              key = scanningResult.getContents();
-
+//            key = "-KDzXp9enspJYN6ybB1Z";
+//            System.out.println(key);
             saveDog(key);
 
 //            myFirebaseRef.child(key).child("dogs").addValueEventListener(new ValueEventListener() {
