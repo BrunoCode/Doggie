@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="uwt.dog">
+    package="com.example.cqngu.doggie">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -8,13 +20,49 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DogListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_dog_list"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cqngu.doggie.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ListActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DogProfile"
+            android:label="@string/title_activity_dog_profile"
+            android:parentActivityName=".ListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".QRActivity" />
+        <activity
+            android:name=".MyDogsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_dog_list"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyDogsProfile"
+            android:parentActivityName=".ListActivity" />
+        <activity android:name=".NewDog"
+            android:parentActivityName=".MyDogsActivity"></activity>
     </application>
 
 </manifest>
